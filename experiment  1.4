@@ -1,0 +1,54 @@
+import java.util.Scanner;
+
+public class BankingSystem {
+    private double[] accountBalances;
+    private String[] transactionIDs;
+
+    public BankingSystem(double[] accountBalances, String[] transactionIDs) {
+        this.accountBalances = accountBalances;
+        this.transactionIDs = transactionIDs;
+    }
+
+    public double calculateAverageBalance() throws ArithmeticException {
+        if (accountBalances.length == 0) {
+            throw new ArithmeticException("No account holders available to calculate average balance.");
+        }
+        double totalBalance = 0;
+        for (double balance : accountBalances) {
+            totalBalance += balance;
+        }
+        return totalBalance / accountBalances.length;
+    }
+
+    public String verifyTransactionID(int index) throws ArrayIndexOutOfBoundsException {
+        return transactionIDs[index];
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        double[] accountBalances = {1000.50, 2000.75, 1500.00}; // Example account balances
+        String[] transactionIDs = {"TXN001", "TXN002", "TXN003"}; // Example transaction IDs
+
+        BankingSystem bankingSystem = new BankingSystem(accountBalances, transactionIDs);
+
+        try {
+            double averageBalance = bankingSystem.calculateAverageBalance();
+            System.out.println("Average Account Balance: " + averageBalance);
+        } catch (ArithmeticException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        System.out.print("Enter transaction ID index to verify (0 to " + (transactionIDs.length - 1) + "): ");
+        int index = scanner.nextInt();
+
+        try {
+            String transactionID = bankingSystem.verifyTransactionID(index);
+            System.out.println("Transaction ID: " + transactionID);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Error: Invalid transaction ID index. " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
+    }
+}
